@@ -98,3 +98,30 @@ make title bigger:
 
 
 
+RMService
+singleton can be accessed anywhere from the project.
+
+RMRequest
+RMendpoint，变动的部分。enum适合。声明enum的类型是string，@frozen是一个prefix
+
+`public func execute(_ request: RMRequest, completion: @escaping() -> Void){}`
+
+在 Swift 里，函数/方法的参数名有两部分：
+外部参数名（调用函数时写的名字）
+内部参数名（函数体内部用的名字）
+📌 举个例子
+func greet(person name: String) {
+    print("Hello, \(name)!")
+}
+外部参数名：person
+内部参数名：name
+调用的时候要写：
+greet(person: "Laura")
+📌 如果写成下划线 _
+func greet(_ name: String) {
+    print("Hello, \(name)!")
+}
+外部参数名：被去掉了（_）
+内部参数名：name
+调用的时候就不需要写参数名，直接传值：
+greet("Laura")   // ✅ 直接写参数
