@@ -97,7 +97,7 @@ make title bigger:
 ![](media/17564191008290/17565915601398.jpg)
 
 
-
+#2. version controll
 RMService
 singleton can be accessed anywhere from the project.
 
@@ -125,3 +125,13 @@ func greet(_ name: String) {
 内部参数名：name
 调用的时候就不需要写参数名，直接传值：
 greet("Laura")   // ✅ 直接写参数
+
+
+
+
+#3.Data models
+based on the schema
+
+struct结构make life easier，并且是codable的（能够让deserialize json to this object)
+类型都需要是Int，String啥的，而不能是int
+还有写的时候最好现在一个文件里跑通
