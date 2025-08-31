@@ -176,3 +176,35 @@ $0.value是optional形，所以要unwrap，guard就是确保有值，没有值�
     }
 
 ```
+
+#4.API request
+
+#5.API call
+
+```let task = URLSession.shared.dataTask(with: urlRequest) { data, _, error in
+    guard let data = data, error == nil else {
+        completion(.failure(error ?? RMServiceError.failedToGetData))
+        return
+    }
+}
+```
+📌 逐句解释
+let task = URLSession.shared.dataTask(with: urlRequest) { ... }
+用系统提供的 共享 URLSession (URLSession.shared) 创建一个 数据任务 (dataTask)。
+这个任务会用 urlRequest（一个 URLRequest 对象，里面包含 URL、请求方法、header 等信息）去发起 HTTP 请求。
+花括号 { ... } 是回调闭包，当网络请求完成时会被调用。闭包参数是：
+data: Data? → 返回的数据（可能是 JSON、图片等）。
+_（第二个参数） → 是 URLResponse?，这里写 _ 表示忽略掉。
+error: Error? → 请求出错时的错误信息。
+guard let data = data, error == nil else { ... }
+guard let data = data：检查 data 是否有值，如果是 nil，进入 else 分支。
+error == nil：同时确认没有错误发生。
+如果 data 为空 或 error 不为空，就进入 else，否则继续往下执行。
+completion(.failure(error ?? RMServiceError.failedToGetData))
+如果失败，就调用 completion 闭包，把结果传递回去。
+.failure(...) → 这里推测 completion 的参数类型是 Result<SomeType, Error>。
+error ?? RMServiceError.failedToGetData → 如果系统的 error 不为空，就传回它；如果为 nil，则返回自定义的错误 RMServiceError.failedToGetData。
+return
+提前返回，避免继续执行后面的逻辑（比如 JSON 解析）。
+
+data models里的所有属性名称，必须和api一样对应。比如api是api_request，那models里最好也这么写，如果写成apiRequest就是无效的
