@@ -135,3 +135,44 @@ based on the schema
 struct结构make life easier，并且是codable的（能够让deserialize json to this object)
 类型都需要是Int，String啥的，而不能是int
 还有写的时候最好现在一个文件里跑通
+
+
+#api request
+把request传入service
+base path
+endpoint
+path componnets
+query parameters （URLQueryItem)
+
+然后声明callback的返回类型，之前是void，啥都没写。因为我们并不知道具体返回的类型，所以可以写成generics
+```    public func execute<T: Codable>(
+        _ request: RMRequest,
+        expecting type: T.Type,
+        completion: @escaping(Result<T, Error>) -> Void){}
+```
+
+
+urlString构建了url。$0 represents current element
+compactMap = map + skip nil
+$0.value是optional形，所以要unwrap，guard就是确保有值，没有值的话就会变成nil，然后被compactMap跳过。
+
+```private var urlString: String {
+        var string = Constants.baseUrl
+        string += "/"
+        string += endpoint.rawValue
+        
+        if !pathComponents.isEmpty {
+            pathComponents.forEach({string += "/\($0)"})
+        }
+        
+        if !queryParameter.isEmpty {
+            string += "?"
+            let argumentString = queryParameter.compactMap({
+                guard let value = \($0.value) else {return nil}
+                return "\($0.name)=\(value)"
+            }).joined(separator: "&")
+        }
+        return string;
+    }
+
+```
